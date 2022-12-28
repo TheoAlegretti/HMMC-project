@@ -1,9 +1,9 @@
 from __future__ import division, print_function
-import matplotlib.pyplot as plt 
+# import matplotlib.pyplot as plt 
 import numpy as np
 from numpy import log
 import time
-import seaborn as sb
+# import seaborn as sb
 import scipy.stats as stats
 from scipy.special import logsumexp
 import particles 
@@ -558,7 +558,7 @@ class PMMH(GenericRWHM):
             self.prop.lpost[0] += pf.logLt
 
 begin = time.time()
-mod = PMMH(fk=RnaProb,prior=my_prior, data=data_Y, Nx=20,niter=5000,T=T)
+mod = PMMH(fk=RnaProb,prior=my_prior, data=data_Y, Nx=10,niter=2000,T=T)
 
 mod.run()
 
