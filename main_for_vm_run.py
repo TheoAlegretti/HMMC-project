@@ -1,3 +1,4 @@
+from __future__ import division, print_function
 import matplotlib.pyplot as plt 
 import numpy as np
 from numpy import log
@@ -8,7 +9,6 @@ from scipy.special import logsumexp
 import particles 
 from particles import distributions as dists
 from particles import collectors 
-from __future__ import division, print_function
 import numpy as np
 from scipy import stats
 from scipy.linalg import cholesky, LinAlgError
