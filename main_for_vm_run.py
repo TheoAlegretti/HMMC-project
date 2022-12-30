@@ -617,6 +617,7 @@ mod.run()
 
 print(f"The PMMH runs in {np.round(time.time()-begin,2)} ' s ")
 
+"""
 for p in prior_dict.keys():  # loop over parameters involved in the bayesian inference
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=[*range(niter)],y=mod.chain.theta[p]))
@@ -628,7 +629,7 @@ for p in prior_dict.keys():  # loop over parameters involved in the bayesian inf
         'xanchor': 'center',
         'yanchor': 'top'})
     fig.show()
-
+"""
 
 pd.DataFrame(mod.chain.theta).to_csv(f"data/theta_iter-{niter}_particles-{Nx}.csv")
 
