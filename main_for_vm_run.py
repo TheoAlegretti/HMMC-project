@@ -602,8 +602,8 @@ class PMMH(GenericRWHM):
 
 
 import plotly.graph_objects as go 
-Nx = 10 
-niter = 1000 
+Nx = 2
+niter = 10
 
 begin = time.time()
 
@@ -629,6 +629,8 @@ for p in prior_dict.keys():  # loop over parameters involved in the bayesian inf
         'yanchor': 'top'})
     fig.show()
 
+
+pd.DataFrame(mod.chain.theta).to_csv(f"data/theta_iter-{niter}_particles-{Nx}.csv")
 
 print(f"That's better ?  Here we have {niter} iterations and  {10} particles ")
 print(f"In case ")
