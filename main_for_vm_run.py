@@ -279,11 +279,11 @@ T = 1000
 ##########################################################################################
 ##########################################################################################
 
-data_x = pd.read_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_X.csv').drop(columns='Unnamed: 0')
-data_y = pd.read_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_Y.csv').drop(columns='Unnamed: 0')
+data_x = pd.read_csv('data/data_X.csv').drop(columns='Unnamed: 0')
+data_y = pd.read_csv('data/data_Y.csv').drop(columns='Unnamed: 0')
 
-data_X = np.array(pd.read_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_X.csv').drop(columns='Unnamed: 0'))
-data_Y = np.array(pd.read_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_Y.csv').drop(columns='Unnamed: 0').T)[0]
+data_X = np.array(pd.read_csv('data/data_X.csv').drop(columns='Unnamed: 0'))
+data_Y = np.array(pd.read_csv('data/data_Y.csv').drop(columns='Unnamed: 0').T)[0]
 
 
 print('Data loaded !')
@@ -602,8 +602,8 @@ class PMMH(GenericRWHM):
 
 
 import plotly.graph_objects as go 
-Nx = 20
-niter = 1000
+Nx = 2
+niter = 5
 
 begin = time.time()
 
