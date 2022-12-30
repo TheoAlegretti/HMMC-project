@@ -155,7 +155,7 @@ class RnaProb(particles.FeynmanKac):
                  data_observed,
                  T,
                  sum_truncation = 10,
-                 eta = 0.05, alpha=0.97, zeta=1.18, beta=8e-4, beta_0=6e-4, # eta = 7.2e-4
+                 eta = 0.05, alpha=0.72, zeta=1.18, beta=8e-4+0.25, beta_0=6e-4, # eta = 7.2e-4
                  gamma_u=0.011, gamma_d=0.013, lambda_u=5.0, lambda_d=5.0,
                  alpha_s=0.53, kappa_s=0.31,
                  kappa=0.61, theta=1.93, epsilon_0=2e-6, epsilon_b=6.7e-4, b = 10):
@@ -265,27 +265,78 @@ class RnaProb(particles.FeynmanKac):
 
 
 # Actual generation of data 
-T = 500
-# We use the same parameters that inside the Feynman-Kac models 
+T = 1000
+# # We use the same parameters that inside the Feynman-Kac models 
 
-data_X, data_Y  = generate_data(length = T, 
-              eta =0.05, alpha=0.97, zeta=1.18, beta=8e-4, beta_0=6e-4, #eta = 7.2e-4
-              gamma_u=0.011, gamma_d=0.013, lambda_u=5.0, lambda_d=5.0,
-              alpha_s=0.53, kappa_s=0.31,
-              kappa=0.61, theta=1.93, epsilon_0=2e-6, epsilon_b=6.7e-4, b = 10)
+# data_X, data_Y  = generate_data(length = T, 
+#               eta =0.05, alpha=0.72, zeta=1.18, beta=8e-4+0.25, beta_0=6e-4, #eta = 7.2e-4
+#               gamma_u=0.011, gamma_d=0.013, lambda_u=5.0, lambda_d=5.0,
+#               alpha_s=0.53, kappa_s=0.31,
+#               kappa=0.61, theta=1.93, epsilon_0=2e-6, epsilon_b=6.7e-4, b = 10)
 
+
+
+
+import pandas as pd 
+# data_x = pd.DataFrame(data_X)
+# data_y = pd.DataFrame(data_Y)
+# data_x.to_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_X.csv')
+# data_y.to_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_Y.csv')
+
+# import plotly.graph_objects as go
+# fig = go.Figure()
+# fig.add_trace(go.Scatter(x=data_x.index,y=data_x[0],name='u_t'))
+# fig.add_trace(go.Scatter(x=data_x.index,y=data_y[0],name="y_t",mode="markers"))
+# fig.show()
+
+
+
+##########################################################################################
+##########################################################################################
+
+data_x = pd.read_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_X.csv').drop(columns='Unnamed: 0')
+data_y = pd.read_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_Y.csv').drop(columns='Unnamed: 0')
+
+data_X = np.array(pd.read_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_X.csv').drop(columns='Unnamed: 0'))
+data_Y = np.array(pd.read_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_Y.csv').drop(columns='Unnamed: 0').T)[0]
+
+
+print('Data loaded !')
+
+simulations = {}
 # Preparation
-N = 100
-fk_rna = RnaProb(data_observed = data_Y, T = T)
-alg = particles.SMC(fk = fk_rna, N = N, collect = [collectors.Moments()])
+for trace in range(10):
+    N = 100
+    fk_rna = RnaProb(data_observed = data_Y, T = T)
+    alg = particles.SMC(fk = fk_rna, N = N, collect = [collectors.Moments()])
+    # Actual runing of the algorithm
+    start = time.time()
+    alg.run()
+    end = time.time()
+    simulations[trace] = alg.summaries.moments
+    print("Similation n°{} done ".format(trace))
+    print("Computation time for data of length {} and {} particules: {} secondes".format(T, N, np.round(end - start,2)))
 
-# Actual runing of the algorithm
-start = time.time()
-alg.run()
-end = time.time()
 
-print("Computation time for data of length {} and {} particules: {} secondes".format(T, N, end - start))
 
+# plt.plot([m["mean"][0] for m in alg.summaries.moments], label = "filtered u_t")
+# plt.plot(data_X[:,0], label = "true u_t")
+# plt.legend()
+
+print('ouin ouin ')
+
+import plotly.graph_objects as go 
+simulation_mean = pd.DataFrame()
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=[*range(T)],y=data_x['0'],name='True u_t'))
+for trace in range(10) : 
+    simulation_mean[trace] = [m["mean"][0] for m in simulations[trace]]
+    fig.add_trace(go.Scatter(x=[*range(T)] , y=[m["mean"][0] for m in simulations[trace]],name =f"filtered u_t of simu n° {trace}"))
+fig.show()
+
+print('All is ready !')
+
+simulation_mean.to_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/simulation_10_mean_bootstrap.csv')
 
 """
 'alpha': 0.97
@@ -489,6 +540,7 @@ class GenericRWHM(MCMC):
     def acc_rate(self):
         return self.nacc / (self.chain.N - 1)
 
+
 class PMMH(GenericRWHM):
     """
     Particle Marginal Metropolis Hastings.
@@ -558,7 +610,7 @@ class PMMH(GenericRWHM):
             self.prop.lpost[0] += pf.logLt
 
 begin = time.time()
-mod = PMMH(fk=RnaProb,prior=my_prior, data=data_Y, Nx=10,niter=2000,T=T)
+mod = PMMH(fk=RnaProb,prior=my_prior, data=data_Y, Nx=2,niter=20,T=T)
 
 mod.run()
 
