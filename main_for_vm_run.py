@@ -602,8 +602,8 @@ class PMMH(GenericRWHM):
 
 
 import plotly.graph_objects as go 
-Nx = 2
-niter = 5
+Nx = 20 
+niter = 1000
 
 begin = time.time()
 
