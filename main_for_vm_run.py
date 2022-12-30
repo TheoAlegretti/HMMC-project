@@ -15,6 +15,8 @@ from scipy.linalg import cholesky, LinAlgError
 import particles
 from particles import smc_samplers as ssp
 from particles import utils
+import pandas as pd
+
 
 # Seed
 rng = np.random.default_rng(seed = 42) 
@@ -274,25 +276,6 @@ T = 1000
 #               alpha_s=0.53, kappa_s=0.31,
 #               kappa=0.61, theta=1.93, epsilon_0=2e-6, epsilon_b=6.7e-4, b = 10)
 
-
-
-
-import pandas as pd 
-# data_x = pd.DataFrame(data_X)
-# data_y = pd.DataFrame(data_Y)
-# data_x.to_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_X.csv')
-# data_y.to_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/data_Y.csv')
-
-# import plotly.graph_objects as go
-# fig = go.Figure()
-# fig.add_trace(go.Scatter(x=data_x.index,y=data_x[0],name='u_t'))
-# fig.add_trace(go.Scatter(x=data_x.index,y=data_y[0],name="y_t",mode="markers"))
-# fig.show()
-
-
-
-
-
 ##########################################################################################
 ##########################################################################################
 
@@ -304,7 +287,7 @@ data_Y = np.array(pd.read_csv('/Users/theoalegretti/Documents/GitHub/HMMC-projec
 
 
 print('Data loaded !')
-
+'''
 simulations = {}
 # Preparation
 for trace in range(10):
@@ -343,6 +326,8 @@ fig.show()
 print('All is ready !')
 
 simulation_mean.to_csv('/Users/theoalegretti/Documents/GitHub/HMMC-project/data/simulation_10_mean_bootstrap.csv')
+'''
+
 
 """
 'alpha': 0.97
@@ -615,10 +600,35 @@ class PMMH(GenericRWHM):
             pf.run()
             self.prop.lpost[0] += pf.logLt
 
+
+import plotly.graph_objects as go 
+Nx = 10 
+niter = 1000 
+
 begin = time.time()
-mod = PMMH(fk=RnaProb,prior=my_prior, data=data_Y, Nx=2,niter=20,T=T)
+
+print(f"The PMMH running for {niter} iter and {Nx} particles  ")
+
+mod = PMMH(fk=RnaProb,prior=my_prior, data=data_Y, Nx=Nx,niter=niter,T=T)
+
 
 mod.run()
 
+
 print(f"The PMMH runs in {np.round(time.time()-begin,2)} ' s ")
 
+for p in prior_dict.keys():  # loop over parameters involved in the bayesian inference
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=[*range(niter)],y=mod.chain.theta[p]))
+    fig.update_layout(
+    title={
+        'text': p,
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'})
+    fig.show()
+
+
+print(f"That's better ?  Here we have {niter} iterations and  {10} particles ")
+print(f"In case ")
