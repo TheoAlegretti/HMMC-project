@@ -8,3 +8,11 @@ We have three objectives:
 - Using PMMH do perform bayesian inference on a subset of parameters.
 
 We rely a lot on the "particles" package developed by N. Chopin (see https://github.com/nchopin/particles); although in some cases we have to adapt it to our needs.
+
+
+Summary of the files:
+- MAIN.ipynb is the most important one. It contains most of our work along with explanations about it. 
+- main_for_vm_run.py is basically the same file than MAIN. We used it to run long computations.
+- tuto_particles.ipynb contains a tutorial from the particles package.
+
+_The rest of the files are not very important_
