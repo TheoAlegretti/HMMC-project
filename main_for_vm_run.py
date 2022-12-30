@@ -291,6 +291,8 @@ import pandas as pd
 
 
 
+
+
 ##########################################################################################
 ##########################################################################################
 
@@ -327,6 +329,10 @@ print('ouin ouin ')
 
 import plotly.graph_objects as go 
 simulation_mean = pd.DataFrame()
+for trace in range(10) : 
+    simulation_mean[trace] = [m["mean"][0] for m in simulations[trace]]
+
+
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=[*range(T)],y=data_x['0'],name='True u_t'))
 for trace in range(10) : 
