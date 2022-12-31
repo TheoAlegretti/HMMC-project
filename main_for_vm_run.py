@@ -607,20 +607,22 @@ niter = 1000
 
 begin = time.time()
 
+df = pd.read_csv(f"data/PMMH_iter-{niter}_particles-{Nx}.csv")
+
 print(f"The PMMH running for {niter} iter and {Nx} particles  ")
 
-mod = PMMH(fk=RnaProb,prior=my_prior, data=data_Y, Nx=Nx,niter=niter,T=T)
+#mod = PMMH(fk=RnaProb,prior=my_prior, data=data_Y, Nx=Nx,niter=niter,T=T)
 
 
-mod.run()
+#mod.run()
 
 
 print(f"The PMMH runs in {np.round(time.time()-begin,2)} ' s ")
 
-"""
+
 for p in prior_dict.keys():  # loop over parameters involved in the bayesian inference
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=[*range(niter)],y=mod.chain.theta[p]))
+    fig.add_trace(go.Scatter(x=[*range(niter)],y=df[p]))
     fig.update_layout(
     title={
         'text': p,
@@ -629,11 +631,12 @@ for p in prior_dict.keys():  # loop over parameters involved in the bayesian inf
         'xanchor': 'center',
         'yanchor': 'top'})
     fig.show()
-"""
 
+
+"""
 df = pd.DataFrame(mod.chain.theta)
 df['lpost']=mod.chain.lpost
 df.to_csv(f"data/PMMH_iter-{niter}_particles-{Nx}.csv")
-
+"""
 print(f"That's better ?  Here we have {niter} iterations and  {10} particles ")
 print(f"In case ")
