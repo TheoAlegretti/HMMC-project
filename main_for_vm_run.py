@@ -602,8 +602,8 @@ class PMMH(GenericRWHM):
 
 
 import plotly.graph_objects as go 
-Nx = 50
-niter = 500
+Nx = 20
+niter = 100
 
 begin = time.time()
 
@@ -611,10 +611,17 @@ begin = time.time()
 
 print(f"The PMMH running for {niter} iter and {Nx} particles  ")
 
-mod = PMMH(fk=RnaProb,prior=my_prior, data=data_Y, Nx=Nx,niter=niter,T=T)
+result = pd.DataFrame(index=range(10),columns=['var'])
+result['var']=result['var'].astype(float)
 
-
-mod.run()
+for simu in range(10) : 
+    begin = time.time()
+    mod = PMMH(fk=RnaProb,prior=my_prior, data=data_Y, Nx=Nx,niter=niter,T=T)
+    mod.run()
+    df = pd.DataFrame(mod.chain.theta)
+    df['lpost']=mod.chain.lpost
+    result['var'][simu]= df['lpost'].var()
+    print(f"Simulation PMMH n° {simu} done in {np.round(time.time() - begin,2)}'s")
 
 
 print(f"The PMMH runs in {np.round(time.time()-begin,2)} ' s ")
@@ -631,12 +638,12 @@ for p in prior_dict.keys():  # loop over parameters involved in the bayesian inf
         'xanchor': 'center',
         'yanchor': 'top'})
     fig.show()
-'''
-
 
 df = pd.DataFrame(mod.chain.theta)
 df['lpost']=mod.chain.lpost
 df.to_csv(f"data/PMMH_iter-{niter}_particles-{Nx}.csv")
+'''
+result.to_csv(f"data/10_simul_PMMH_20N_100ite.csv")
 
 print(f"That's better ?  Here we have {niter} iterations and  {10} particles ")
 print(f"In case ")
