@@ -611,8 +611,11 @@ begin = time.time()
 
 print(f"The PMMH running for {niter} iter and {Nx} particles  ")
 
-result = pd.DataFrame(index=range(10),columns=['var'])
+result = pd.DataFrame(index=range(10),columns=['var','mean_lg','last_lg'])
+
 result['var']=result['var'].astype(float)
+result['mean_lg']=result['mean_lg'].astype(float)
+result['last_lg']=result['last_lg'].astype(float)
 
 for simu in range(10) : 
     begin = time.time()
@@ -621,6 +624,9 @@ for simu in range(10) :
     df = pd.DataFrame(mod.chain.theta)
     df['lpost']=mod.chain.lpost
     result['var'][simu]= df['lpost'].var()
+    result['mean_lg'][simu]= df['lpost'].mean()
+    result['last_lg'][simu]= df['lpost'].last()
+    print(f"var observed :{df['lpost'].var()}, mean obs : {df['lpost'].mean()} and last value : {df['lpost'].last()} ")
     print(f"Simulation PMMH n° {simu} done in {np.round(time.time() - begin,2)}'s")
 
 
