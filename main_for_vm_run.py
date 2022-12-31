@@ -625,8 +625,8 @@ for simu in range(10) :
     df['lpost']=mod.chain.lpost
     result['var'][simu]= df['lpost'].var()
     result['mean_lg'][simu]= df['lpost'].mean()
-    result['last_lg'][simu]= df['lpost'].last()
-    print(f"var observed :{df['lpost'].var()}, mean obs : {df['lpost'].mean()} and last value : {df['lpost'].last()} ")
+    result['last_lg'][simu]= df['lpost'].tail(1).values[0]
+    print(f"var observed :{df['lpost'].var()}, mean obs : {df['lpost'].mean()} and last value : {df['lpost'].tail(1).values[0]} ")
     print(f"Simulation PMMH n° {simu} done in {np.round(time.time() - begin,2)}'s")
 
 
