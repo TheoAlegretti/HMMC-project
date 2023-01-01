@@ -10,9 +10,10 @@ We have three objectives:
 We rely a lot on the "particles" package developed by N. Chopin (see https://github.com/nchopin/particles); although in some cases we have to adapt it to our needs.
 
 
-Summary of the files:
+Summary of the files and folders:
 - MAIN.ipynb is the most important one. It contains most of our work along with explanations about it. 
-- main_for_vm_run.py is basically the same file than MAIN. We used it to run long computations.
-- tuto_particles.ipynb contains a tutorial from the particles package.
+- main_for_vm_run.py is a filed we used for long computations. The code in it is similar to what can be found in MAIN.
+- data is a folder containing the data produced that we wanted to fix.
+- figure is a folder containing the figures for our report and presentation. 
 
 _The rest of the files are not very important_
