@@ -1,2 +1,5 @@
 # Ignoring ipynb checkpoints
 .ipynb_checkpoints
+
+# Ignoring images
+*.png
