@@ -13,7 +13,6 @@ We rely a lot on the "particles" package developed by N. Chopin (see https://git
 Summary of the files and folders:
 - MAIN.ipynb is the most important one. It contains most of our work along with explanations about it. 
 - main_for_vm_run.py is a filed we used for long computations. The code in it is similar to what can be found in MAIN.
-- data is a folder containing the data produced that we wanted to fix.
-- figure is a folder containing the figures for our report and presentation. 
+- The folder "data" contains intermediary data we saved in order not to have to regenerate them each time.
 
 _The rest of the files are not very important_
