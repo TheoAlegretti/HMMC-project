@@ -602,7 +602,7 @@ class PMMH(GenericRWHM):
 
 
 import plotly.graph_objects as go 
-Nx = 20
+Nx = 200
 niter = 100
 
 begin = time.time()
@@ -649,7 +649,7 @@ df = pd.DataFrame(mod.chain.theta)
 df['lpost']=mod.chain.lpost
 df.to_csv(f"data/PMMH_iter-{niter}_particles-{Nx}.csv")
 '''
-result.to_csv(f"data/10_simul_PMMH_20N_100ite.csv")
+result.to_csv(f"data/10_simul_PMMH_200N_100ite.csv")
 
-print(f"That's better ?  Here we have {niter} iterations and  {10} particles ")
+print(f"That's better ?  Here we have {niter} iterations and  {200} particles ")
 print(f"In case ")
